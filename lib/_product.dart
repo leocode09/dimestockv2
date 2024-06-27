@@ -1,10 +1,10 @@
 class Product {
-  final String name;
-  final String date;
-  final int costPrice;
-  final int sellingPrice;
-  final int stock0;
-  final int stock1;
+  String name;
+  String date;
+  int costPrice;
+  int sellingPrice;
+  int stock0;
+  int stock1;
   int stock2;
 
   Product({

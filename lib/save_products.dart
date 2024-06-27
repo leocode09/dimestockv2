@@ -3,9 +3,6 @@ import 'package:dimestockv2/products.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
-
-
-
 Future<void> saveProducts() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final productsJson = products.map((product) => {
@@ -20,7 +17,6 @@ Future<void> saveProducts() async {
   await prefs.setString('products', jsonEncode(productsJson));
 }
 
-
 Future<List<Product>> loadProducts() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final productsJson = prefs.getString('products');
@@ -29,7 +25,6 @@ Future<List<Product>> loadProducts() async {
     final decodedProducts = jsonDecode(productsJson) as List;
     return decodedProducts.map((item) => Product(
       name: item['name'],
-      // Assuming 'date' is a property of Product:
       date: item['date'],
       costPrice: item['costPrice'],
       sellingPrice: item['sellingPrice'],
@@ -42,4 +37,3 @@ Future<List<Product>> loadProducts() async {
     return []; // Or an empty list if no products are saved
   }
 }
-

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:dimestockv2/_date.dart';
 import 'package:dimestockv2/_product.dart';
 import 'package:dimestockv2/products.dart';
@@ -50,23 +52,27 @@ class _MyHomePageState extends State<MyHomePage> {
   var _income = 0;
   var _profit = 0;
 
+  var index = 0;
+
   int selectedIndex = -1;
-  var _isEditing = false;
+  bool _isEditing = false;
 
-  // void deleteContact(int index) {
-  //   setState(() {
-  //     products.removeAt(index);
-  //     saveContacts();
-  //   });
-  // }
-
-  void editProduct(int index) {
+  void deleteContact(int index) {
     setState(() {
+      products.removeAt(index);
+      saveProducts();
+    });
+  }
+
+  void editProduct(index, product) {
+    setState(() {
+      _isEditing = true;
       selectedIndex = index;
-      _nameController.text = products[index].name;
-      _costPriceController.text = products[index].costPrice.toString();
-      _sellingPriceController.text = products[index].sellingPrice.toString();
-      _stockController.text = products[index].stock2.toString();
+
+      _nameController.text = product.name;
+      _costPriceController.text = product.costPrice.toString();
+      _sellingPriceController.text = product.sellingPrice.toString();
+      _stockController.text = product.stock2.toString();
     });
   }
 
@@ -121,6 +127,13 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void clearTextField() {
+    _nameController.clear();
+    _costPriceController.clear();
+    _sellingPriceController.clear();
+    _stockController.clear();
+  }
+
   dynamic _showFormDailog(BuildContext context) {
     return showDialog(
       context: context,
@@ -128,36 +141,80 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (param) {
         return AlertDialog(
           actions: <Widget>[
-            FilledButton(
-              onPressed: () {
-                Navigator.pop(context);
-                setState(() {
-                  _stock = products.fold<int>(
-                      0,
-                      (previousValue, product) =>
-                          previousValue + product.stock2);
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                if (_isEditing)
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      foregroundColor: const Color.fromARGB(255, 255, 4, 0),
+                    ),
+                    onPressed: () {
+                      deleteContact(selectedIndex);
+                      _isEditing = false;
+                      Navigator.pop(context);
+                    },
+                    child: const Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.delete, size: 35), // Increased icon size
+                        Text('Delete'),
+                      ],
+                    ),
+                  ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    _isEditing = false;
+                    clearTextField();
+                    updateState();
+                  },
+                  child: const Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.cancel, size: 35), // Increased icon size
+                      Text('Cancel'),
+                    ],
+                  ),
+                ),
+                if (_isEditing)
+                  TextButton(
+                    onPressed: () {
+                      String name = _nameController.text.trim();
+                      int? costPrice =
+                          int.tryParse(_costPriceController.text.trim());
+                      int? sellingPrice =
+                          int.tryParse(_sellingPriceController.text.trim());
+                      int? stock = int.tryParse(_stockController.text.trim());
+                      setState(() {
+                        if (_nameController.text.isNotEmpty &&
+                            _costPriceController.text.isNotEmpty &&
+                            _sellingPriceController.text.isNotEmpty &&
+                            _stockController.text.isNotEmpty &&
+                            selectedIndex != -1) {
+                          products[selectedIndex].name = name;
+                          products[selectedIndex].costPrice = costPrice!;
+                          products[selectedIndex].sellingPrice = sellingPrice!;
+                          products[selectedIndex].stock2 = stock!;
+                          selectedIndex = -1;
+                          saveProducts();
+                          clearTextField();
+                        }
+                      });
 
-                  _income = products.fold<int>(
-                      0,
-                      (previousValue, product) =>
-                          previousValue +
-                          ((product.stock1 - product.stock2) *
-                              product.sellingPrice));
-                  _profit = products.fold<int>(
-                      0,
-                      (previousValue, product) =>
-                          previousValue +
-                          ((product.stock1 - product.stock2) *
-                              (product.sellingPrice - product.costPrice)));
-                });
-              },
-              style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all<Color>(Colors.red),
-              ),
-              child: const Text('Cancel'),
-            ),
-            _isEditing
-                ? FilledButton(
+                      _isEditing = false;
+                      Navigator.pop(context);
+                    },
+                    child: const Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.edit, size: 35), // Increased icon size
+                        Text('Update'),
+                      ],
+                    ),
+                  ),
+                if (!_isEditing)
+                  TextButton(
                     onPressed: () {
                       if (_nameController.text.isNotEmpty &&
                           _costPriceController.text.isNotEmpty &&
@@ -175,10 +232,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             stock1: 0,
                             stock2: int.tryParse(_stockController.text) ?? 0,
                           ));
-                          _nameController.clear();
-                          _costPriceController.clear();
-                          _sellingPriceController.clear();
-                          _stockController.clear();
+                          clearTextField();
                           saveProducts();
                         });
                       } else {
@@ -190,32 +244,21 @@ class _MyHomePageState extends State<MyHomePage> {
                         );
                       }
                     },
-                    child: const Text('+ Add'),
+                    child: const Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.add_outlined,
+                            size: 35), // Increased icon size
+                        Text('Add'),
+                      ],
+                    ),
                   )
-                : ElevatedButton(
-                    onPressed: () {
-                      // String name = nameController.text.trim();
-                      // String number = numberController.text.trim();
-                      // setState(() {
-                      // if (name.isNotEmpty &&
-                      // number.isNotEmpty &&
-                      // selectedIndex != -1) {
-                      // contacts[selectedIndex].name = name;
-                      // contacts[selectedIndex].number = number;
-                      // saveContacts();
-                      // selectedIndex = -1;
-                      // nameController.text = '';
-                      // numberController.text = '';
-                      // }
-                      // });
-
-                      _isEditing = false;
-                    },
-                    child: const Text('Update')),
+              ],
+            ),
           ],
           title: _isEditing
-              ? const Text('Add New Product')
-              : const Text('Edit Product'),
+              ? const Text('Edit Product')
+              : const Text('Add New Product'),
           content: SizedBox(
             width:
                 MediaQuery.of(context).size.width * 0.9, // 90% of screen width
@@ -290,14 +333,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 letterSpacing: 2,
               ),
             ),
-            FilledButton(
+            FilledButton.icon(
               onPressed: () {
-                _isEditing = true;
-                // setState(() {
-                _showFormDailog(context);
-                // });
+                setState(() {
+                  _isEditing = false;
+                  clearTextField();
+                  _showFormDailog(context);
+                });
               },
-              child: const Text('+ new'),
+              icon: const Icon(Icons.add),
+              label: const Text('new'),
             )
           ],
         ),
@@ -363,34 +408,29 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ],
                     rows: (() {
-                      int index = 0;
-                      return products
-                          .map((product) => DataRow(
-                                cells: [
-                                  DataCell(
-                                    InkWell(
-                                      child: Text(
-                                         '${++index}. ${product.name}',
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        // setState(() {
-                                        _isEditing = true;
-                                        editProduct(index) ;
-                                        _showFormDailog(context);
-                                        // });
-                                        print('Pressed ${product.name}');
-                                        
-                                      },
-                                    ),
+                      return List<DataRow>.generate(products.length, (index) {
+                        final product = products[index];
+                        return DataRow(
+                          cells: [
+                            DataCell(
+                              InkWell(
+                                child: Text(
+                                  '${index + 1}. ${product.name}',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                    color: Colors.white,
                                   ),
-                                ],
-                              ))
-                          .toList();
+                                ),
+                                onTap: () {
+                                  editProduct(index, product);
+                                  _showFormDailog(context);
+                                },
+                              ),
+                            ),
+                          ],
+                        );
+                      });
                     })(),
                   ),
                   Expanded(
