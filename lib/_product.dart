@@ -1,5 +1,6 @@
 class Product {
   final String name;
+  final String date;
   final int costPrice;
   final int sellingPrice;
   final int stock0;
@@ -8,6 +9,7 @@ class Product {
 
   Product({
     required this.name,
+    required this.date,
     required this.costPrice,
     required this.sellingPrice,
     required this.stock0,
@@ -18,6 +20,7 @@ class Product {
   Product updateStock() {
     return Product(
       name: name,
+      date: date,
       costPrice: costPrice,
       sellingPrice: sellingPrice,
       stock0: stock1,
