@@ -1,13 +1,9 @@
-import 'dart:ffi';
-
-import 'package:dimestockv2/_date.dart';
+import '_date.dart';
 import 'package:dimestockv2/_product.dart';
 import 'package:dimestockv2/products.dart';
 import 'package:dimestockv2/save_products.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
-// import 'dart:convert';
 
 void main() {
   runApp(const MyApp());
@@ -57,6 +53,36 @@ class _MyHomePageState extends State<MyHomePage> {
   int selectedIndex = -1;
   bool _isEditing = false;
 
+  List<String> dateList = [];
+  // var result;
+
+  var products = [
+    Product(
+        name: 'Product1',
+        date: DateTime(2024, 6, 15).toString(),
+        costPrice: 10,
+        sellingPrice: 15,
+        stock0: 5,
+        stock1: 3,
+        stock2: 2),
+    Product(
+        name: 'Product2',
+        date: DateTime(2024, 6, 20).toString(),
+        costPrice: 20,
+        sellingPrice: 25,
+        stock0: 8,
+        stock1: 6,
+        stock2: 4),
+    Product(
+        name: 'Product3',
+        date: DateTime(2024, 5, 10).toString(),
+        costPrice: 15,
+        sellingPrice: 20,
+        stock0: 10,
+        stock1: 7,
+        stock2: 5),
+  ];
+
   void deleteContact(int index) {
     setState(() {
       products.removeAt(index);
@@ -79,6 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+    dateList = getDateList(products);
     // loadProductsIntoState();
   }
 
@@ -234,7 +261,13 @@ class _MyHomePageState extends State<MyHomePage> {
                           ));
                           clearTextField();
                           saveProducts();
+                          // ____________________________________________
+
+                          dateList = getDateList(products);
+                          // ____________________________________________
                         });
+                        print(products);
+                        print(dateList);
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
@@ -437,89 +470,109 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Scrollbar(
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
-                        child: DataTable(
-                          columnSpacing: 20,
-                          columns: List.generate(
-                            3,
-                            (index) => DataColumn(
-                              label: Text(
-                                '6/1$index',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontStyle: FontStyle.italic,
+                        child: dateList.isEmpty
+                            ? const Text('nothing')
+                            : DataTable(
+                                columnSpacing: 20,
+                                columns: List.generate(
+                                  dateList.length,
+                                  (index) => DataColumn(
+                                    label: Text(
+                                      dateList[index]
+                                          .split('-')
+                                          .sublist(1)
+                                          .join('/'), // Format date as MM/DD
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontStyle: FontStyle.italic,
+                                      ),
+                                    ),
+                                  ),
                                 ),
+                                rows: List.generate(
+                                  products.length,
+                                  (rowIndex) => DataRow(
+                                    cells: List.generate(
+                                      dateList.length,
+                                      (cellIndex) => DataCell(
+                                        Text(
+                                          '${products[rowIndex].stock2}',
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                // rows: products
+                                //     .map((product) => DataRow(
+                                //           cells: [
+                                //             DataCell(
+                                //               Text(
+                                //                 product.stock0.toString(),
+                                //                 style: const TextStyle(
+                                //                   color: Colors.white,
+                                //                 ),
+                                //               ),
+                                //             ),
+                                //             DataCell(
+                                //               Text(
+                                //                 product.stock1.toString(),
+                                //                 style: const TextStyle(
+                                //                   color: Colors.white,
+                                //                 ),
+                                //               ),
+                                //             ),
+                                //             DataCell(Focus(
+                                //               onFocusChange: (hasFocus) {
+                                //                 if (!hasFocus) {
+                                //                   handleUnfocus(product);
+                                //                 }
+                                //               },
+                                //               child: TextField(
+                                //                 controller: TextEditingController(
+                                //                   text: product.stock2.toString(),
+                                //                 ),
+                                //                 onChanged: (value) {
+                                //                   product.stock2 =
+                                //                       int.tryParse(value) ?? 0;
+                                //                   if (value.isEmpty ||
+                                //                       value ==
+                                //                           product.stock2.toString()) {
+                                //                     return;
+                                //                   }
+                                //                   saveProducts();
+                                //                   updateState();
+                                //                 },
+                                //                 onEditingComplete: () =>
+                                //                     handleTextFieldComplete(product),
+                                //                 onSubmitted: (value) =>
+                                //                     handleTextFieldSubmit(
+                                //                         product, value),
+                                //                 textAlign: TextAlign.center,
+                                //                 keyboardType: TextInputType.number,
+                                //                 inputFormatters: <TextInputFormatter>[
+                                //                   FilteringTextInputFormatter
+                                //                       .digitsOnly,
+                                //                   FilteringTextInputFormatter
+                                //                       .singleLineFormatter,
+                                //                   LengthLimitingTextInputFormatter(4)
+                                //                 ],
+                                //                 style: const TextStyle(
+                                //                     color: Color.fromARGB(
+                                //                         255, 255, 189, 103)),
+                                //                 decoration: const InputDecoration(
+                                //                   hintText: 'X',
+                                //                   hintStyle: TextStyle(
+                                //                     color: Colors.grey,
+                                //                   ),
+                                //                 ),
+                                //               ),
+                                //             )),
+                                //           ],
+                                //         ))
+                                //     .toList(),
                               ),
-                            ),
-                          ),
-                          rows: products
-                              .map((product) => DataRow(
-                                    cells: [
-                                      DataCell(
-                                        Text(
-                                          product.stock0.toString(),
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                      DataCell(
-                                        Text(
-                                          product.stock1.toString(),
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                      DataCell(Focus(
-                                        onFocusChange: (hasFocus) {
-                                          if (!hasFocus) {
-                                            handleUnfocus(product);
-                                          }
-                                        },
-                                        child: TextField(
-                                          controller: TextEditingController(
-                                            text: product.stock2.toString(),
-                                          ),
-                                          onChanged: (value) {
-                                            product.stock2 =
-                                                int.tryParse(value) ?? 0;
-                                            if (value.isEmpty ||
-                                                value ==
-                                                    product.stock2.toString()) {
-                                              return;
-                                            }
-                                            saveProducts();
-                                            updateState();
-                                          },
-                                          onEditingComplete: () =>
-                                              handleTextFieldComplete(product),
-                                          onSubmitted: (value) =>
-                                              handleTextFieldSubmit(
-                                                  product, value),
-                                          textAlign: TextAlign.center,
-                                          keyboardType: TextInputType.number,
-                                          inputFormatters: <TextInputFormatter>[
-                                            FilteringTextInputFormatter
-                                                .digitsOnly,
-                                            FilteringTextInputFormatter
-                                                .singleLineFormatter,
-                                            LengthLimitingTextInputFormatter(4)
-                                          ],
-                                          style: const TextStyle(
-                                              color: Color.fromARGB(
-                                                  255, 255, 189, 103)),
-                                          decoration: const InputDecoration(
-                                            hintText: 'X',
-                                            hintStyle: TextStyle(
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                        ),
-                                      )),
-                                    ],
-                                  ))
-                              .toList(),
-                        ),
                       ),
                     ),
                   ),
@@ -531,24 +584,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          setState(() {
-            products =
-                products.map((product) => product.updateStock()).toList();
-            saveProducts();
-            _stock = products.fold<int>(
-                0, (previousValue, product) => previousValue + product.stock2);
-            _income = products.fold<int>(
-                0,
-                (previousValue, product) =>
-                    previousValue +
-                    ((product.stock1 - product.stock2) * product.sellingPrice));
-            _profit = products.fold<int>(
-                0,
-                (previousValue, product) =>
-                    previousValue +
-                    ((product.stock1 - product.stock2) *
-                        (product.sellingPrice - product.costPrice)));
-          });
+          updateState();
         },
         tooltip: 'Increment',
         child: const Icon(Icons.keyboard_arrow_right_outlined),
