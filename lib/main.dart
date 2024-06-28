@@ -4,6 +4,7 @@ import 'package:dimestockv2/products.dart';
 import 'package:dimestockv2/save_products.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(const MyApp());
@@ -83,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
         stock2: 5),
   ];
 
-  void deleteContact(int index) {
+  void deleteProduct(int index) {
     setState(() {
       products.removeAt(index);
       saveProducts();
@@ -177,7 +178,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       foregroundColor: const Color.fromARGB(255, 255, 4, 0),
                     ),
                     onPressed: () {
-                      deleteContact(selectedIndex);
+                      deleteProduct(selectedIndex);
                       _isEditing = false;
                       Navigator.pop(context);
                     },
@@ -261,13 +262,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           ));
                           clearTextField();
                           saveProducts();
-                          // ____________________________________________
-
                           dateList = getDateList(products);
-                          // ____________________________________________
                         });
-                        print(products);
-                        print(dateList);
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
@@ -496,7 +492,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       dateList.length,
                                       (cellIndex) => DataCell(
                                         Text(
-                                          '${products[rowIndex].stock2}',
+                                          '${DateTime.parse(products[rowIndex].date).compareTo(DateTime.parse(dateList[cellIndex])) <= 0 ? products[rowIndex].stock2 : 0}',
                                           style: const TextStyle(
                                               color: Colors.white),
                                         ),
