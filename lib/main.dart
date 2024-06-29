@@ -1,3 +1,5 @@
+import 'package:dimestockv2/stock_value.dart';
+
 import '_date.dart';
 import 'package:dimestockv2/_product.dart';
 import 'package:dimestockv2/products.dart';
@@ -106,8 +108,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    dateList = getDateList(products);
     // loadProductsIntoState();
+    dateList = getDateList(products);
   }
 
   void loadProductsIntoState() async {
@@ -263,6 +265,12 @@ class _MyHomePageState extends State<MyHomePage> {
                           clearTextField();
                           saveProducts();
                           dateList = getDateList(products);
+
+                          for (var product in products) {
+                            print(
+                                'Name: ${product.name}, Date: ${product.date}'); // Adjust based on your properties
+                          }
+                          print(DateUtils.dateOnly(DateTime.now()));
                         });
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -380,7 +388,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
-            // mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -490,13 +498,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                   (rowIndex) => DataRow(
                                     cells: List.generate(
                                       dateList.length,
-                                      (cellIndex) => DataCell(
-                                        Text(
-                                          '${DateTime.parse(products[rowIndex].date).compareTo(DateTime.parse(dateList[cellIndex])) <= 0 ? products[rowIndex].stock2 : 0}',
-                                          style: const TextStyle(
-                                              color: Colors.white),
-                                        ),
-                                      ),
+                                      (cellIndex) => DataCell(Text(
+                                        getStockValue(products[rowIndex],
+                                            dateList[cellIndex]),
+                                        style: const TextStyle(
+                                            color: Colors.white),
+                                      )),
                                     ),
                                   ),
                                 ),
