@@ -3,29 +3,23 @@ class Product {
   String date;
   int costPrice;
   int sellingPrice;
-  int stock0;
-  int stock1;
-  int stock2;
+  List<List<int>> stock;
 
   Product({
     required this.name,
     required this.date,
     required this.costPrice,
     required this.sellingPrice,
-    required this.stock0,
-    required this.stock1,
-    required this.stock2,
+    required this.stock,
   });
 
-  Product updateStock() {
-    return Product(
-      name: name,
-      date: date,
-      costPrice: costPrice,
-      sellingPrice: sellingPrice,
-      stock0: stock1,
-      stock1: stock2,
-      stock2: 0,
-    );
-  }
+  // Product updateStock() {
+  //   return Product(
+  //     name: name,
+  //     date: date,
+  //     costPrice: costPrice,
+  //     sellingPrice: sellingPrice,
+  //     stock: ,
+  //   );
+  // }
 }

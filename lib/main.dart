@@ -1,12 +1,11 @@
-import 'package:dimestockv2/stock_value.dart';
+import 'package:dimestockv2/products.dart';
+import 'package:dimestockv2/stock_list.dart';
+// import 'package:dimestockv2/stock_value.dart';
 
 import '_date.dart';
 import 'package:dimestockv2/_product.dart';
-import 'package:dimestockv2/products.dart';
 import 'package:dimestockv2/save_products.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 
 void main() {
   runApp(const MyApp());
@@ -62,28 +61,36 @@ class _MyHomePageState extends State<MyHomePage> {
   var products = [
     Product(
         name: 'Product1',
-        date: DateTime(2024, 6, 15).toString(),
+        date: DateTime(2024, 6, 25).toString(),
         costPrice: 10,
         sellingPrice: 15,
-        stock0: 5,
-        stock1: 3,
-        stock2: 2),
-    Product(
-        name: 'Product2',
-        date: DateTime(2024, 6, 20).toString(),
-        costPrice: 20,
-        sellingPrice: 25,
-        stock0: 8,
-        stock1: 6,
-        stock2: 4),
-    Product(
-        name: 'Product3',
-        date: DateTime(2024, 5, 10).toString(),
-        costPrice: 15,
-        sellingPrice: 20,
-        stock0: 10,
-        stock1: 7,
-        stock2: 5),
+        stock: [
+          [0, 0],
+          [09, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [10, 0]
+        ]),
+    // Product(
+    //     name: 'Product2',
+    //     date: DateTime(2024, 6, 28).toString(),
+    //     costPrice: 20,
+    //     sellingPrice: 25,
+    //     stock: [
+    //       [0, 0],
+    //       [0, 0],
+    //       [0, 0],
+    //       [50, 0]
+    //     ]),
+    // Product(
+    //     name: 'Product3',
+    //     date: DateTime(2024, 6, 30).toString(),
+    //     costPrice: 15,
+    //     sellingPrice: 20,
+    //     stock: [
+    //       [35, 0]
+    //     ]),
   ];
 
   void deleteProduct(int index) {
@@ -101,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _nameController.text = product.name;
       _costPriceController.text = product.costPrice.toString();
       _sellingPriceController.text = product.sellingPrice.toString();
-      _stockController.text = product.stock2.toString();
+      _stockController.text = product.stock.last[0].toString();
     });
   }
 
@@ -110,6 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     // loadProductsIntoState();
     dateList = getDateList(products);
+    print(dateList);
   }
 
   void loadProductsIntoState() async {
@@ -128,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void handleTextFieldSubmit(Product product, String value) {
-    product.stock2 = int.tryParse(value) ?? 0;
+    product.stock.last[0] = int.tryParse(value) ?? 0;
     saveProducts();
     updateState();
   }
@@ -137,21 +145,24 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _stock = products.fold<int>(
         0,
-        (previousValue, product) => previousValue + product.stock2,
+        (previousValue, product) => previousValue + product.stock.last[0],
       );
 
       _income = products.fold<int>(
         0,
         (previousValue, product) =>
             previousValue +
-            ((product.stock1 - product.stock2) * product.sellingPrice),
+            ((product.stock[product.stock.length - 2][0] -
+                    product.stock.last[0]) *
+                product.sellingPrice),
       );
 
       _profit = products.fold<int>(
         0,
         (previousValue, product) =>
             previousValue +
-            ((product.stock1 - product.stock2) *
+            ((product.stock[product.stock.length - 2][0] -
+                    product.stock.last[0]) *
                 (product.sellingPrice - product.costPrice)),
       );
     });
@@ -225,7 +236,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           products[selectedIndex].name = name;
                           products[selectedIndex].costPrice = costPrice!;
                           products[selectedIndex].sellingPrice = sellingPrice!;
-                          products[selectedIndex].stock2 = stock!;
+                          products[selectedIndex].stock.last[0] = stock!;
                           selectedIndex = -1;
                           saveProducts();
                           clearTextField();
@@ -258,9 +269,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                 int.tryParse(_costPriceController.text) ?? 0,
                             sellingPrice:
                                 int.tryParse(_sellingPriceController.text) ?? 0,
-                            stock0: 0,
-                            stock1: 0,
-                            stock2: int.tryParse(_stockController.text) ?? 0,
+                            stock: stockList(
+                              dateList.length,
+                              int.tryParse(_stockController.text) ?? 0,
+                            ),
                           ));
                           clearTextField();
                           saveProducts();
@@ -499,8 +511,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                     cells: List.generate(
                                       dateList.length,
                                       (cellIndex) => DataCell(Text(
-                                        getStockValue(products[rowIndex],
-                                            dateList[cellIndex]),
+                                        products[rowIndex]
+                                            .stock[cellIndex][0]
+                                            .toString(),
                                         style: const TextStyle(
                                             color: Colors.white),
                                       )),
@@ -520,7 +533,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 //             ),
                                 //             DataCell(
                                 //               Text(
-                                //                 product.stock1.toString(),
+                                //                 product.stock[product.stock.length-2][0].toString(),
                                 //                 style: const TextStyle(
                                 //                   color: Colors.white,
                                 //                 ),
@@ -534,14 +547,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                 //               },
                                 //               child: TextField(
                                 //                 controller: TextEditingController(
-                                //                   text: product.stock2.toString(),
+                                //                   text: product.stock.last[0].toString(),
                                 //                 ),
                                 //                 onChanged: (value) {
-                                //                   product.stock2 =
+                                //                   product.stock.last[0] =
                                 //                       int.tryParse(value) ?? 0;
                                 //                   if (value.isEmpty ||
                                 //                       value ==
-                                //                           product.stock2.toString()) {
+                                //                           product.stock.last[0].toString()) {
                                 //                     return;
                                 //                   }
                                 //                   saveProducts();

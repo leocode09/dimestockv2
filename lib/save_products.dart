@@ -11,9 +11,7 @@ Future<void> saveProducts() async {
             'date': product.date,
             'costPrice': product.costPrice,
             'sellingPrice': product.sellingPrice,
-            'stock0': product.stock0,
-            'stock1': product.stock1,
-            'stock2': product.stock2,
+            'stock': product.stock,
           })
       .toList();
   await prefs.setString('products', jsonEncode(productsJson));
@@ -31,9 +29,7 @@ Future<List<Product>> loadProducts() async {
               date: item['date'],
               costPrice: item['costPrice'],
               sellingPrice: item['sellingPrice'],
-              stock0: item['stock0'],
-              stock1: item['stock1'],
-              stock2: item['stock2'],
+              stock: item['stock'],
             ))
         .toList();
   } else {
