@@ -7,6 +7,8 @@ import 'package:dimestockv2/_product.dart';
 import 'package:dimestockv2/save_products.dart';
 import 'package:flutter/material.dart';
 
+import 'stock_form.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -510,13 +512,36 @@ class _MyHomePageState extends State<MyHomePage> {
                                   (rowIndex) => DataRow(
                                     cells: List.generate(
                                       dateList.length,
-                                      (cellIndex) => DataCell(Text(
-                                        products[rowIndex]
-                                            .stock[cellIndex][0]
-                                            .toString(),
-                                        style: const TextStyle(
-                                            color: Colors.white),
-                                      )),
+                                      (cellIndex) => DataCell(
+                                        AnimatedSwitcher(
+                                          duration: const Duration(milliseconds: 500),
+                                          transitionBuilder: (Widget child,
+                                              Animation<double> animation) {
+                                            return FadeTransition(
+                                              opacity: animation,
+                                              child: ScaleTransition(
+                                                scale: animation,
+                                                child: child,
+                                              ),
+                                            );
+                                          },
+                                          child: StockForm(
+                                            key: ValueKey(
+                                                '${rowIndex}_$cellIndex'),
+                                            initialValue: products[rowIndex]
+                                                .stock[cellIndex][0],
+                                            onIncrement: () {
+                                              // Implement increment logic
+                                            },
+                                            onDecrement: () {
+                                              // Implement decrement logic
+                                            },
+                                            onChanged: (newValue) {
+                                              // Implement value change logic
+                                            },
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
