@@ -143,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
     updateState();
   }
 
-  void updateState() {
+  void _saveAndExit() {
     setState(() {
       _stock = products.fold<int>(
         0,
