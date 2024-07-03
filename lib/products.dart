@@ -1,3 +1,3 @@
-import 'package:dimestockv2/_product.dart';
+import 'package:Leonidas/_product.dart';
 
 List<Product> products = [];

@@ -1,13 +1,13 @@
-import 'package:dimestockv2/products.dart';
-import 'package:dimestockv2/stock_list.dart';
-// import 'package:dimestockv2/stock_value.dart';
+import 'package:Leonidas/next_stock.dart';
+import 'package:Leonidas/selected_stock.dart';
+import 'package:Leonidas/stock_list.dart';
+import 'package:Leonidas/table_edit.dart';
+import 'package:flutter/services.dart';
 
 import '_date.dart';
-import 'package:dimestockv2/_product.dart';
-import 'package:dimestockv2/save_products.dart';
+import 'package:Leonidas/_product.dart';
+import 'package:Leonidas/save_products.dart';
 import 'package:flutter/material.dart';
-
-import 'stock_form.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 255, 191, 0),
+          seedColor: Colors.orange,
         ),
         useMaterial3: true,
       ),
@@ -47,10 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final _costPriceController = TextEditingController();
   final _sellingPriceController = TextEditingController();
   final _stockController = TextEditingController();
-
-  var _stock = 0;
-  var _income = 0;
-  var _profit = 0;
+  final _addedStockController = TextEditingController();
 
   var index = 0;
 
@@ -58,41 +55,251 @@ class _MyHomePageState extends State<MyHomePage> {
   bool _isEditing = false;
 
   List<String> dateList = [];
-  // var result;
+
+  // ____________________________
+
+  int stock = 0;
+  int income = 0;
+  int expenses = 0;
+  int sells = 0;
+  int profit = 0;
+
+  void barFunction(int index, List<Product> products) {
+    income = 0;
+    profit = 0;
+    for (int i = 0; i < products.length; i++) {
+      if (index > 0) {
+        sells += (products[i].stock[index - 1][0] -
+            (products[i].stock[index][0] - products[i].stock[index][1]));
+        income += (products[i].stock[index - 1][0] -
+                (products[i].stock[index][0] - products[i].stock[index][1])) *
+            (products[i].sellingPrice);
+        profit += (products[i].stock[index - 1][0] -
+                (products[i].stock[index][0] - products[i].stock[index][1])) *
+            (products[i].sellingPrice - products[i].costPrice);
+        print(income);
+      }
+    }
+  }
+  // ____________________________
 
   var products = [
     Product(
         name: 'Product1',
-        date: DateTime(2024, 6, 25).toString(),
+        date: DateTime(2024, 6, 28).toString(),
         costPrice: 10,
         sellingPrice: 15,
         stock: [
-          [0, 0],
-          [09, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [10, 0]
+          [20, 0],
+          [18, 0],
+          [35, 20],
+          [32, 0],
+          [11, 0],
         ]),
-    // Product(
-    //     name: 'Product2',
-    //     date: DateTime(2024, 6, 28).toString(),
-    //     costPrice: 20,
-    //     sellingPrice: 25,
-    //     stock: [
-    //       [0, 0],
-    //       [0, 0],
-    //       [0, 0],
-    //       [50, 0]
-    //     ]),
-    // Product(
-    //     name: 'Product3',
-    //     date: DateTime(2024, 6, 30).toString(),
-    //     costPrice: 15,
-    //     sellingPrice: 20,
-    //     stock: [
-    //       [35, 0]
-    //     ]),
+    Product(
+        name: 'Product2',
+        date: DateTime(2024, 6, 28).toString(),
+        costPrice: 20,
+        sellingPrice: 25,
+        stock: [
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+        ]),
+    Product(
+        name: 'Product2',
+        date: DateTime(2024, 6, 28).toString(),
+        costPrice: 20,
+        sellingPrice: 25,
+        stock: [
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+        ]),
+    Product(
+        name: 'Product2',
+        date: DateTime(2024, 6, 28).toString(),
+        costPrice: 20,
+        sellingPrice: 25,
+        stock: [
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+        ]),
+    Product(
+        name: 'Product2',
+        date: DateTime(2024, 6, 28).toString(),
+        costPrice: 20,
+        sellingPrice: 25,
+        stock: [
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+        ]),
+    Product(
+        name: 'Product2',
+        date: DateTime(2024, 6, 28).toString(),
+        costPrice: 20,
+        sellingPrice: 25,
+        stock: [
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+        ]),
+    Product(
+        name: 'Product2',
+        date: DateTime(2024, 6, 28).toString(),
+        costPrice: 20,
+        sellingPrice: 25,
+        stock: [
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+        ]),
+    Product(
+        name: 'Product2',
+        date: DateTime(2024, 6, 28).toString(),
+        costPrice: 20,
+        sellingPrice: 25,
+        stock: [
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+        ]),
+    Product(
+        name: 'Product2',
+        date: DateTime(2024, 6, 28).toString(),
+        costPrice: 20,
+        sellingPrice: 25,
+        stock: [
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+        ]),
+    Product(
+        name: 'Product2',
+        date: DateTime(2024, 6, 28).toString(),
+        costPrice: 20,
+        sellingPrice: 25,
+        stock: [
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+        ]),
+    Product(
+        name: 'Product2',
+        date: DateTime(2024, 6, 28).toString(),
+        costPrice: 20,
+        sellingPrice: 25,
+        stock: [
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+        ]),
+    Product(
+        name: 'Product2',
+        date: DateTime(2024, 6, 28).toString(),
+        costPrice: 20,
+        sellingPrice: 25,
+        stock: [
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+        ]),
+    Product(
+        name: 'Product2',
+        date: DateTime(2024, 6, 28).toString(),
+        costPrice: 20,
+        sellingPrice: 25,
+        stock: [
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+        ]),
+    Product(
+        name: 'Product2',
+        date: DateTime(2024, 6, 28).toString(),
+        costPrice: 20,
+        sellingPrice: 25,
+        stock: [
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+        ]),
+    Product(
+        name: 'Product2',
+        date: DateTime(2024, 6, 28).toString(),
+        costPrice: 20,
+        sellingPrice: 25,
+        stock: [
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+        ]),
+    Product(
+        name: 'Product2',
+        date: DateTime(2024, 6, 28).toString(),
+        costPrice: 20,
+        sellingPrice: 25,
+        stock: [
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+        ]),
+    Product(
+        name: 'Product2',
+        date: DateTime(2024, 6, 28).toString(),
+        costPrice: 20,
+        sellingPrice: 25,
+        stock: [
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+        ]),
+    Product(
+        name: 'Product2',
+        date: DateTime(2024, 6, 28).toString(),
+        costPrice: 20,
+        sellingPrice: 25,
+        stock: [
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+          [0, 0],
+        ]),
   ];
 
   void deleteProduct(int index) {
@@ -119,6 +326,9 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     // loadProductsIntoState();
     dateList = getDateList(products);
+    for (var product in products) {
+      product.stock = nextStock(product.stock, dateList.length);
+    }
     print(dateList);
   }
 
@@ -129,45 +339,18 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void handleUnfocus(Product product) {
     saveProducts();
-    updateState();
+    // updateState();
   }
 
   void handleTextFieldComplete(Product product) {
     saveProducts();
-    updateState();
+    // updateState();
   }
 
   void handleTextFieldSubmit(Product product, String value) {
     product.stock.last[0] = int.tryParse(value) ?? 0;
     saveProducts();
-    updateState();
-  }
-
-  void _saveAndExit() {
-    setState(() {
-      _stock = products.fold<int>(
-        0,
-        (previousValue, product) => previousValue + product.stock.last[0],
-      );
-
-      _income = products.fold<int>(
-        0,
-        (previousValue, product) =>
-            previousValue +
-            ((product.stock[product.stock.length - 2][0] -
-                    product.stock.last[0]) *
-                product.sellingPrice),
-      );
-
-      _profit = products.fold<int>(
-        0,
-        (previousValue, product) =>
-            previousValue +
-            ((product.stock[product.stock.length - 2][0] -
-                    product.stock.last[0]) *
-                (product.sellingPrice - product.costPrice)),
-      );
-    });
+    // updateState();
   }
 
   void clearTextField() {
@@ -210,7 +393,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Navigator.pop(context);
                     _isEditing = false;
                     clearTextField();
-                    updateState();
+                    // updateState();
                   },
                   child: const Column(
                     mainAxisSize: MainAxisSize.min,
@@ -329,6 +512,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   const SizedBox(height: 15),
                   TextFormField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     controller: _costPriceController,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -340,6 +525,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   const SizedBox(height: 15),
                   TextFormField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     controller: _sellingPriceController,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -349,6 +536,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   const SizedBox(height: 15),
                   TextFormField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     controller: _stockController,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -400,48 +589,90 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.fromLTRB(18, 10, 18, 10),
-                    color: const Color.fromARGB(255, 59, 59, 59),
-                    child: Text(
-                      'Stock $_stock',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
+            children: [
+              Column(children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 59, 59, 59),
+                          border: Border.all(),
+                          // borderRadius: BorderRadius.circular(15),
+                        ),
+                        padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.sell_outlined,
+                                color: Colors.white),
+                            const SizedBox(width: 8),
+                            Text(
+                              'Sells \n $sells',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.fromLTRB(18, 10, 18, 10),
-                    color: const Color.fromARGB(255, 59, 59, 59),
-                    child: Text(
-                      'Income \$$_income',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
+                    Expanded(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Color.fromARGB(255, 59, 59, 59),
+                          // border: Border.all(),
+                          // borderRadius: BorderRadius.circular(15),
+                        ),
+                        padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.attach_money, color: Colors.white),
+                            const SizedBox(width: 8),
+                            Text(
+                              'Income \n \$$income',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.fromLTRB(18, 10, 18, 10),
-                    color: const Color.fromARGB(255, 59, 59, 59),
-                    child: Text(
-                      'Profit \$$_profit',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 59, 59, 59),
+                          border: Border.all(),
+                          // borderRadius: BorderRadius.circular(15),
+                        ),
+                        padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.trending_up, color: Colors.white),
+                            const SizedBox(width: 8),
+                            Text(
+                              'Profit \n \$$profit',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
+              ]),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -495,14 +726,22 @@ class _MyHomePageState extends State<MyHomePage> {
                                 columns: List.generate(
                                   dateList.length,
                                   (index) => DataColumn(
-                                    label: Text(
-                                      dateList[index]
-                                          .split('-')
-                                          .sublist(1)
-                                          .join('/'), // Format date as MM/DD
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontStyle: FontStyle.italic,
+                                    label: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          barFunction(index, products);
+                                        });
+                                        print(income);
+                                      },
+                                      child: Text(
+                                        dateList[index]
+                                            .split('-')
+                                            .sublist(1)
+                                            .join('/'), // Format date as MM/DD
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontStyle: FontStyle.italic,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -512,123 +751,70 @@ class _MyHomePageState extends State<MyHomePage> {
                                   (rowIndex) => DataRow(
                                     cells: List.generate(
                                       dateList.length,
-                                      (cellIndex) => DataCell(
-                                        AnimatedSwitcher(
-                                          duration: const Duration(milliseconds: 500),
-                                          transitionBuilder: (Widget child,
-                                              Animation<double> animation) {
-                                            return FadeTransition(
-                                              opacity: animation,
-                                              child: ScaleTransition(
-                                                scale: animation,
-                                                child: child,
-                                              ),
-                                            );
-                                          },
-                                          child: StockForm(
-                                            key: ValueKey(
-                                                '${rowIndex}_$cellIndex'),
-                                            initialValue: products[rowIndex]
-                                                .stock[cellIndex][0],
-                                            onIncrement: () {
-                                              // Implement increment logic
-                                            },
-                                            onDecrement: () {
-                                              // Implement decrement logic
-                                            },
-                                            onChanged: (newValue) {
-                                              // Implement value change logic
-                                            },
-                                          ),
-                                        ),
-                                      ),
+                                      (cellIndex) => DataCell(MyTextField(
+                                        productStock:
+                                            products[rowIndex].stock[cellIndex],
+                                      )),
                                     ),
                                   ),
                                 ),
-                                // rows: products
-                                //     .map((product) => DataRow(
-                                //           cells: [
-                                //             DataCell(
-                                //               Text(
-                                //                 product.stock0.toString(),
-                                //                 style: const TextStyle(
-                                //                   color: Colors.white,
-                                //                 ),
-                                //               ),
-                                //             ),
-                                //             DataCell(
-                                //               Text(
-                                //                 product.stock[product.stock.length-2][0].toString(),
-                                //                 style: const TextStyle(
-                                //                   color: Colors.white,
-                                //                 ),
-                                //               ),
-                                //             ),
-                                //             DataCell(Focus(
-                                //               onFocusChange: (hasFocus) {
-                                //                 if (!hasFocus) {
-                                //                   handleUnfocus(product);
-                                //                 }
-                                //               },
-                                //               child: TextField(
-                                //                 controller: TextEditingController(
-                                //                   text: product.stock.last[0].toString(),
-                                //                 ),
-                                //                 onChanged: (value) {
-                                //                   product.stock.last[0] =
-                                //                       int.tryParse(value) ?? 0;
-                                //                   if (value.isEmpty ||
-                                //                       value ==
-                                //                           product.stock.last[0].toString()) {
-                                //                     return;
-                                //                   }
-                                //                   saveProducts();
-                                //                   updateState();
-                                //                 },
-                                //                 onEditingComplete: () =>
-                                //                     handleTextFieldComplete(product),
-                                //                 onSubmitted: (value) =>
-                                //                     handleTextFieldSubmit(
-                                //                         product, value),
-                                //                 textAlign: TextAlign.center,
-                                //                 keyboardType: TextInputType.number,
-                                //                 inputFormatters: <TextInputFormatter>[
-                                //                   FilteringTextInputFormatter
-                                //                       .digitsOnly,
-                                //                   FilteringTextInputFormatter
-                                //                       .singleLineFormatter,
-                                //                   LengthLimitingTextInputFormatter(4)
-                                //                 ],
-                                //                 style: const TextStyle(
-                                //                     color: Color.fromARGB(
-                                //                         255, 255, 189, 103)),
-                                //                 decoration: const InputDecoration(
-                                //                   hintText: 'X',
-                                //                   hintStyle: TextStyle(
-                                //                     color: Colors.grey,
-                                //                   ),
-                                //                 ),
-                                //               ),
-                                //             )),
-                                //           ],
-                                //         ))
-                                //     .toList(),
                               ),
                       ),
                     ),
                   ),
                 ],
               ),
+              const SizedBox(height: 80)
             ],
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          updateState();
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.keyboard_arrow_right_outlined),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          SizedBox(
+            width: 70,
+            height: 50,
+            child: TextField(
+              controller: _addedStockController,
+              keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: const Color.fromARGB(255, 59, 59, 59),
+                hintText: 'Added',
+                hintStyle: const TextStyle(color: Colors.orange),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              ),
+              style: const TextStyle(fontSize: 14, color: Colors.white),
+            ),
+          ),
+          const SizedBox(width: 8),
+          SizedBox(
+            width: 50,
+            height: 50,
+            child: FloatingActionButton(
+              backgroundColor: const Color.fromARGB(255, 133, 84, 21),
+              onPressed: () {
+                setState(() {
+                  productStock[1] =
+                      int.tryParse(_addedStockController.text) ?? 0;
+                  _addedStockController.text = '';
+                });
+              },
+              tooltip: 'Add',
+              child: const Icon(
+                Icons.add,
+                color: Colors.white,
+                size: 30,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

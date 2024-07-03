@@ -1,5 +1,5 @@
-import 'package:dimestockv2/_product.dart';
-import 'package:dimestockv2/products.dart';
+import 'package:Leonidas/_product.dart';
+import 'package:Leonidas/products.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 

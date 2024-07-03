@@ -12,14 +12,4 @@ class Product {
     required this.sellingPrice,
     required this.stock,
   });
-
-  // Product updateStock() {
-  //   return Product(
-  //     name: name,
-  //     date: date,
-  //     costPrice: costPrice,
-  //     sellingPrice: sellingPrice,
-  //     stock: ,
-  //   );
-  // }
 }
