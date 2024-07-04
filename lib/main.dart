@@ -1,4 +1,5 @@
 import 'package:Leonidas/next_stock.dart';
+import 'package:Leonidas/products.dart';
 import 'package:Leonidas/selected_stock.dart';
 import 'package:Leonidas/stock_list.dart';
 import 'package:Leonidas/table_edit.dart';
@@ -81,231 +82,12 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }
   }
-  // ____________________________
-
-  var products = [
-    Product(
-        name: 'Product1',
-        date: DateTime(2024, 6, 28).toString(),
-        costPrice: 10,
-        sellingPrice: 15,
-        stock: [
-          [20, 0],
-          [18, 0],
-          [35, 20],
-          [32, 0],
-          [11, 0],
-        ]),
-    Product(
-        name: 'Product2',
-        date: DateTime(2024, 6, 28).toString(),
-        costPrice: 20,
-        sellingPrice: 25,
-        stock: [
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-        ]),
-    Product(
-        name: 'Product2',
-        date: DateTime(2024, 6, 28).toString(),
-        costPrice: 20,
-        sellingPrice: 25,
-        stock: [
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-        ]),
-    Product(
-        name: 'Product2',
-        date: DateTime(2024, 6, 28).toString(),
-        costPrice: 20,
-        sellingPrice: 25,
-        stock: [
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-        ]),
-    Product(
-        name: 'Product2',
-        date: DateTime(2024, 6, 28).toString(),
-        costPrice: 20,
-        sellingPrice: 25,
-        stock: [
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-        ]),
-    Product(
-        name: 'Product2',
-        date: DateTime(2024, 6, 28).toString(),
-        costPrice: 20,
-        sellingPrice: 25,
-        stock: [
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-        ]),
-    Product(
-        name: 'Product2',
-        date: DateTime(2024, 6, 28).toString(),
-        costPrice: 20,
-        sellingPrice: 25,
-        stock: [
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-        ]),
-    Product(
-        name: 'Product2',
-        date: DateTime(2024, 6, 28).toString(),
-        costPrice: 20,
-        sellingPrice: 25,
-        stock: [
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-        ]),
-    Product(
-        name: 'Product2',
-        date: DateTime(2024, 6, 28).toString(),
-        costPrice: 20,
-        sellingPrice: 25,
-        stock: [
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-        ]),
-    Product(
-        name: 'Product2',
-        date: DateTime(2024, 6, 28).toString(),
-        costPrice: 20,
-        sellingPrice: 25,
-        stock: [
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-        ]),
-    Product(
-        name: 'Product2',
-        date: DateTime(2024, 6, 28).toString(),
-        costPrice: 20,
-        sellingPrice: 25,
-        stock: [
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-        ]),
-    Product(
-        name: 'Product2',
-        date: DateTime(2024, 6, 28).toString(),
-        costPrice: 20,
-        sellingPrice: 25,
-        stock: [
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-        ]),
-    Product(
-        name: 'Product2',
-        date: DateTime(2024, 6, 28).toString(),
-        costPrice: 20,
-        sellingPrice: 25,
-        stock: [
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-        ]),
-    Product(
-        name: 'Product2',
-        date: DateTime(2024, 6, 28).toString(),
-        costPrice: 20,
-        sellingPrice: 25,
-        stock: [
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-        ]),
-    Product(
-        name: 'Product2',
-        date: DateTime(2024, 6, 28).toString(),
-        costPrice: 20,
-        sellingPrice: 25,
-        stock: [
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-        ]),
-    Product(
-        name: 'Product2',
-        date: DateTime(2024, 6, 28).toString(),
-        costPrice: 20,
-        sellingPrice: 25,
-        stock: [
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-        ]),
-    Product(
-        name: 'Product2',
-        date: DateTime(2024, 6, 28).toString(),
-        costPrice: 20,
-        sellingPrice: 25,
-        stock: [
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-        ]),
-    Product(
-        name: 'Product2',
-        date: DateTime(2024, 6, 28).toString(),
-        costPrice: 20,
-        sellingPrice: 25,
-        stock: [
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-          [0, 0],
-        ]),
-  ];
+  
 
   void deleteProduct(int index) {
     setState(() {
       products.removeAt(index);
-      saveProducts();
+      saveProducts(products);
     });
   }
 
@@ -324,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    // loadProductsIntoState();
+    loadProductsIntoState();
     dateList = getDateList(products);
     for (var product in products) {
       product.stock = nextStock(product.stock, dateList.length);
@@ -338,18 +120,18 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void handleUnfocus(Product product) {
-    saveProducts();
+    saveProducts(products);
     // updateState();
   }
 
   void handleTextFieldComplete(Product product) {
-    saveProducts();
+    saveProducts(products);
     // updateState();
   }
 
   void handleTextFieldSubmit(Product product, String value) {
     product.stock.last[0] = int.tryParse(value) ?? 0;
-    saveProducts();
+    saveProducts(products);
     // updateState();
   }
 
@@ -423,7 +205,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           products[selectedIndex].sellingPrice = sellingPrice!;
                           products[selectedIndex].stock.last[0] = stock!;
                           selectedIndex = -1;
-                          saveProducts();
+                          saveProducts(products);
                           clearTextField();
                         }
                       });
@@ -460,7 +242,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ));
                           clearTextField();
-                          saveProducts();
+                          saveProducts(products);
                           dateList = getDateList(products);
 
                           for (var product in products) {
@@ -803,6 +585,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 setState(() {
                   productStock[1] =
                       int.tryParse(_addedStockController.text) ?? 0;
+                  saveProducts(products);
                   _addedStockController.text = '';
                 });
               },

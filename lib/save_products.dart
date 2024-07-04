@@ -1,9 +1,9 @@
 import 'package:Leonidas/_product.dart';
-import 'package:Leonidas/products.dart';
+// import 'package:Leonidas/products.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
-Future<void> saveProducts() async {
+Future<void> saveProducts(List products) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final productsJson = products
       .map((product) => {
@@ -20,7 +20,7 @@ Future<void> saveProducts() async {
 Future<List<Product>> loadProducts() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final productsJson = prefs.getString('products');
-
+  
   if (productsJson != null) {
     final decodedProducts = jsonDecode(productsJson) as List;
     return decodedProducts
@@ -29,11 +29,10 @@ Future<List<Product>> loadProducts() async {
               date: item['date'],
               costPrice: item['costPrice'],
               sellingPrice: item['sellingPrice'],
-              stock: item['stock'],
+              stock: (item['stock'] as List).map((e) => List<int>.from(e)).toList(),
             ))
         .toList();
   } else {
-    // Handle the case where there's no saved product data (optional)
-    return []; // Or an empty list if no products are saved
+    return [];
   }
 }

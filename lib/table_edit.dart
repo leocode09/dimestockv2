@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'products.dart';
+import 'save_products.dart';
 import 'selected_stock.dart';
 
 class MyTextField extends StatefulWidget {
@@ -59,6 +61,7 @@ class TableEdit extends State<MyTextField> {
                   onChanged: (value) {
                     widget.productStock[0] = int.tryParse(value) ?? 0;
                     productStock = widget.productStock;
+                    saveProducts(products);
                   },
                   style: const TextStyle(color: Colors.white),
                   decoration: const InputDecoration(
