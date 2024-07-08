@@ -1,18 +1,18 @@
-import 'package:Leonidas/build_info_card.dart';
-import 'package:Leonidas/next_stock.dart';
-import 'package:Leonidas/products.dart';
-import 'package:Leonidas/selected_stock.dart';
-import 'package:Leonidas/stock_list.dart';
-import 'package:Leonidas/table_edit.dart';
+import 'package:Leonidas/stock/build_info_card.dart';
+import 'package:Leonidas/stock/next_stock.dart';
+import 'package:Leonidas/stock/products.dart';
+import 'package:Leonidas/stock/selected_stock.dart';
+import 'package:Leonidas/stock/stock_list.dart';
+import 'package:Leonidas/stock/table_edit.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
-import '_date.dart';
-import 'package:Leonidas/_product.dart';
-import 'package:Leonidas/save_products.dart';
+import 'stock/_date.dart';
+import 'package:Leonidas/stock/_product.dart';
+import 'package:Leonidas/stock/save_products.dart';
 import 'package:flutter/material.dart';
 
-import 'date_list.dart';
+import 'stock/date_list.dart';
 
 void main() {
   runApp(const MyApp());
@@ -433,7 +433,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Color.fromARGB(255, 21, 21, 21),
       // extendBodyBehindAppBar: true,
       appBar: AppBar(
         elevation: 0,
@@ -526,111 +526,30 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ]),
               Row(
-  crossAxisAlignment: CrossAxisAlignment.start,
-  children: [
-    Container(
-      // width: 200, // Adjust as needed
-      decoration: BoxDecoration(
-        // color: Color.fromARGB(255, 22, 22, 22),
-        boxShadow: [
-          BoxShadow(
-            // color: Colors.black.withOpacity(0.1),
-            blurRadius: 5,
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
-      child: DataTable(
-        headingRowHeight: 60,
-        dataRowHeight: 50,
-        columnSpacing: 0,
-        columns: const [
-          DataColumn(
-            label: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 4),
-              child: Text(
-                'Products',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                ),
-              ),
-            ),
-          ),
-        ],
-        rows: List<DataRow>.generate(
-          products.length,
-          (index) => DataRow(
-            color: WidgetStateProperty.resolveWith<Color?>(
-              (Set<WidgetState> states) {
-                if (index.isEven) return Colors.white.withOpacity(0.05);
-                return null;
-              },
-            ),
-            cells: [
-              DataCell(
-                InkWell(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    child: Text(
-                      '${index + 1}. ${products[index].name}',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.white,
-                      ),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    // width: 200, // Adjust as needed
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 22, 22, 22),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 5,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
                     ),
-                  ),
-                  onTap: () {
-                    editProduct(index, products[index]);
-                    _showFormDailog(context);
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    ),
-    Expanded(
-      child: Container(
-        decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 0, 0, 0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 5,
-              offset: Offset(0, 3),
-            ),
-          ],
-        ),
-        child: Scrollbar(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: dateList.isEmpty
-                ? Center(child: Text('No data available', style: TextStyle(color: Color(0xFF2C3E50))))
-                : DataTable(
-                    columnSpacing: 20,
-                    headingRowHeight: 60,
-                    dataRowHeight: 50,
-                    columns: List.generate(
-                      dateList.length,
-                      (index) => DataColumn(
-                        
-                        label: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              barFunction(index, products);
-                            });
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                            decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 19, 19, 19),
-                              borderRadius: BorderRadius.circular(4),
-                            ),
+                    child: DataTable(
+                      headingRowHeight: 60,
+                      // dataRowHeight: 50,
+                      columnSpacing: 0,
+                      columns: const [
+                        DataColumn(
+                          label: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 4),
                             child: Text(
-                              dateList[index].split('-').sublist(1).join('/'),
+                              'Products',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -639,37 +558,133 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                    rows: List.generate(
-                      products.length,
-                      (rowIndex) => DataRow(
-                        color: WidgetStateProperty.resolveWith<Color?>(
-                          (Set<WidgetState> states) {
-                            if (rowIndex.isEven) return Color.fromARGB(255, 0, 0, 0);
-                            return null;
-                          },
-                        ),
-                        cells: List.generate(
-                          dateList.length,
-                          (cellIndex) => DataCell(
-                            Container(
-                              padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                              child: MyTextField(
-                                productStock: products[rowIndex].stock[cellIndex],
+                      ],
+                      rows: List<DataRow>.generate(
+                        products.length,
+                        (index) => DataRow(
+                          color: WidgetStateProperty.resolveWith<Color?>(
+                            (Set<WidgetState> states) {
+                              if (index.isEven)
+                                return Color.fromARGB(255, 30, 30, 30);
+                              return null;
+                            },
+                          ),
+                          cells: [
+                            DataCell(
+                              InkWell(
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 16),
+                                  child: Text(
+                                    '${index + 1}. ${products[index].name}',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                onTap: () {
+                                  editProduct(index, products[index]);
+                                  _showFormDailog(context);
+                                },
                               ),
                             ),
-                          ),
+                          ],
                         ),
                       ),
                     ),
                   ),
-          ),
-        ),
-      ),
-    ),
-  ],
-),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        // color: const Color.fromARGB(255, 0, 0, 0),
+                        color: const Color.fromARGB(255, 21, 21, 21),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 5,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Scrollbar(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: dateList.isEmpty
+                              ? Center(
+                                  child: Text('No data available',
+                                      style:
+                                          TextStyle(color: Color(0xFF2C3E50))))
+                              : DataTable(
+                                  columnSpacing: 10,
+                                  headingRowHeight: 60,
+                                  // dataRowHeight: 50,
+                                  columns: List.generate(
+                                    dateList.length,
+                                    (index) => DataColumn(
+                                      label: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            barFunction(index, products);
+                                          });
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 8, horizontal: 12),
+                                          decoration: BoxDecoration(
+                                            // color: Color.fromARGB(255, 19, 19, 19),
+                                            color:
+                                                Color.fromARGB(255, 35, 35, 35),
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                          ),
+                                          child: Text(
+                                            dateList[index]
+                                                .split('-')
+                                                .sublist(1)
+                                                .join('/'),
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  rows: List.generate(
+                                    products.length,
+                                    (rowIndex) => DataRow(
+                                      color: WidgetStateProperty.resolveWith<
+                                          Color?>(
+                                        (Set<WidgetState> states) {
+                                          if (rowIndex.isEven)
+                                            return Color.fromARGB(255, 30, 30, 30);
+                                          return null;
+                                        },
+                                      ),
+                                      cells: List.generate(
+                                        dateList.length,
+                                        (cellIndex) => DataCell(
+                                          Container(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 4, horizontal: 8),
+                                            child: MyTextField(
+                                              productStock: products[rowIndex]
+                                                  .stock[cellIndex],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               const SizedBox(height: 80)
             ],
           ),

@@ -1,5 +1,5 @@
-import 'package:Leonidas/_product.dart';
-import 'package:Leonidas/table_edit.dart';
+import 'package:Leonidas/stock/_product.dart';
+import 'package:Leonidas/stock/table_edit.dart';
 import 'package:flutter/material.dart';
 
 class StickyHeadersTable extends StatefulWidget {

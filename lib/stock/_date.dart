@@ -1,4 +1,4 @@
-import 'package:Leonidas/_product.dart';
+import 'package:Leonidas/stock/_product.dart';
 import 'package:intl/intl.dart';
 
 String getCurrentDate() {
