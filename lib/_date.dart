@@ -3,13 +3,11 @@ import 'package:intl/intl.dart';
 
 String getCurrentDate() {
   DateTime now = DateTime.now();
-  return now.toString();
+  return DateFormat('yyyy-MM-dd').format(now);
 }
 
 List<String> getDateList(List<Product> products) {
-  if (products.isEmpty) {
-    return ['No products found'];
-  }
+  if (products.isEmpty) return [];
 
   DateTime earliestDate = DateTime.parse(products[0].date);
   for (var product in products) {

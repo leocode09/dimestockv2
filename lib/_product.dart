@@ -1,8 +1,8 @@
 class Product {
   String name;
   String date;
-  int costPrice;
-  int sellingPrice;
+  double costPrice;
+  double sellingPrice;
   List<List<int>> stock;
 
   Product({
