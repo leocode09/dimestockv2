@@ -172,45 +172,44 @@ class _ExpenseListState extends State<ExpenseList> with TickerProviderStateMixin
 
   Widget _buildExpenseItem(Expense expense) {
     return Slidable(
-      // actionPane: SlidableDrawerActionPane(),
-      // actionExtentRatio: 0.25,
       child: Card(
-        color: Color(0x151515),  // Set the background color here
-          // elevation: 5,              
-        margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        child: ListTile(
-          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          // leading: CircleAvatar(
-          //   backgroundColor: Color(0xFFBFA600),
-          //   child: Text(
-          //     expense.spenderName.substring(0, 1).toUpperCase(),
-          //     style: TextStyle(color: Colors.grey[900]),
-          //   ),
-          // ),
-          title: Text(
-            expense.spenderName,
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+  color: Color(0xFF151515),
+  margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+  child: ListTile(
+    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    title: Text(
+      expense.spenderName,
+      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+    ),
+    subtitle: Text(
+      expense.description,
+      style: TextStyle(color: Colors.white70),
+    ),
+    trailing: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Text(
+          '\$${expense.amountSpent.toStringAsFixed(2)}',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFFBFA600),
           ),
-          subtitle: Text(expense.description),
-          trailing: Text(
-            '\$${expense.amountSpent.toStringAsFixed(2)}',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFFBFA600),
-            ),
-          ),
-          onTap: () => _showExpenseDialog(context, expense),
         ),
-      ),
-      // secondaryActions: <Widget>[
-      //   IconSlideAction(
-      //     caption: 'Delete',
-      //     color: Colors.red,
-      //     icon: Icons.delete,
-      //     onTap: () => deleteExpense(expense),
-      //   ),
-      // ],
+        SizedBox(height: 4),
+        IconButton(
+          icon: Icon(Icons.delete, color: Colors.red, size: 20),
+          onPressed: () => deleteExpense(expense),
+          padding: EdgeInsets.zero,
+          constraints: BoxConstraints(),
+          splashRadius: 20,
+        ),
+      ],
+    ),
+    onTap: () => _showExpenseDialog(context, expense),
+  ),
+)
     );
   }
 

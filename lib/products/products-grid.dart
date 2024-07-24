@@ -1,30 +1,11 @@
+
 import 'package:Leonidas/stock/_product.dart';
-import 'package:Leonidas/stock/products.dart';
 import 'package:flutter/material.dart';
 
-class Products extends StatefulWidget {
-  // final List<Product> products;
-// final List<Product> products
+class ProductsGrid extends StatelessWidget {
+  final List<Product> products;
 
-// In your build method:
-// ProductsGrid(products: products)
-  // const Products({Key? key, required this.products}) : super(key: key);
-
-  @override
-  State<Products> createState() => _ProductsState();
-}
-
-class _ProductsState extends State<Products> {
-  String _searchQuery = '';
-
-  List<Product> get filteredProducts {
-  if (_searchQuery.isEmpty) {
-    return products;
-  }
-  return products.where((product) =>
-    product.name.toLowerCase().contains(_searchQuery.toLowerCase())
-  ).toList();
-}
+  const ProductsGrid({Key? key, required this.products}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +19,7 @@ class _ProductsState extends State<Products> {
             Text(
               'Products (${products.length})',
               style: TextStyle(
-                color: Colors.orange,
+                color: Colors.green,
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
@@ -50,7 +31,7 @@ class _ProductsState extends State<Products> {
             SizedBox(height: 20),
             Expanded(
               child: GridView.count(
-                crossAxisCount: 2,
+                crossAxisCount: 3,
                 childAspectRatio: 1.2,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
@@ -64,7 +45,7 @@ class _ProductsState extends State<Products> {
         ),
       ),
     );
-  }
+  } 
 
   Widget _buildProductCard(Product product) {
     return Card(
@@ -82,7 +63,7 @@ class _ProductsState extends State<Products> {
             ),
             Text(
               '\$ ${product.sellingPrice.toStringAsFixed(2)}',
-              style: TextStyle(color: Colors.orange, fontSize: 14),
+              style: TextStyle(color: Colors.green, fontSize: 14),
             ),
           ],
         ),
@@ -100,11 +81,11 @@ class _ProductsState extends State<Products> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.add, color: Colors.orange, size: 40),
+            Icon(Icons.add, color: Colors.green, size: 40),
             SizedBox(height: 8),
             Text(
               'Add New',
-              style: TextStyle(color: Colors.orange, fontSize: 16),
+              style: TextStyle(color: Colors.green, fontSize: 16),
             ),
           ],
         ),
