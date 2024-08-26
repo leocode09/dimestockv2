@@ -8,7 +8,6 @@ import 'package:Leonidas/stock/table_edit.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
-// import '../Expenses/bottom_bar.dart';
 import '../stock/_date.dart';
 import 'package:Leonidas/stock/_product.dart';
 import 'package:Leonidas/stock/save_products.dart';
