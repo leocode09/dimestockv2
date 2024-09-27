@@ -111,7 +111,7 @@ class _StockPageState extends State<StockPage> {
     for (var product in products) {
       product.stock = nextStock(product.stock, dateList.length);
     }
-    dateList = getDateList(products);
+    dateList = getDateList();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollToEnd();
     });
@@ -121,7 +121,7 @@ class _StockPageState extends State<StockPage> {
     final loadedProducts = await loadProducts();
     setState(() {
       products = loadedProducts;
-      dateList = getDateList(products);
+      dateList = getDateList();
       if (dateList.isEmpty || products.isEmpty) {
         products.add(
           Product(
@@ -138,7 +138,7 @@ class _StockPageState extends State<StockPage> {
       }
     });
 
-    dateList = getDateList(products);
+    dateList = getDateList();
 
     for (var product in products) {
       product.stock = nextStock(product.stock, dateList.length);
@@ -281,7 +281,7 @@ class _StockPageState extends State<StockPage> {
                           );
                           clearTextField();
                           saveProducts(products);
-                          dateList = getDateList(products);
+                          dateList = getDateList();
                         });
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
