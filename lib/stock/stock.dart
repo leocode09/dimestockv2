@@ -703,6 +703,7 @@ class _StockPageState extends State<StockPage> {
           ),
         ],
       ),
+   
     );
   }
 }
